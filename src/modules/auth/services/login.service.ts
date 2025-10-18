@@ -1,4 +1,5 @@
 import { BcryptServiceProps } from "@/common/interfaces/bcrypt-service-props";
+import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
@@ -7,7 +8,6 @@ import {
     LoginResponse,
     LoginUseCase,
 } from "../use-cases/login.use-case";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
 
 @Injectable()
 export class LoginService implements LoginUseCase {
@@ -44,7 +44,6 @@ export class LoginService implements LoginUseCase {
             };
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...userWithoutPassword } = user;
 
         const token = await this.jwtService.signAsync({

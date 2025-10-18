@@ -1,5 +1,5 @@
-import type { RoleType } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { SetMetadata } from "@nestjs/common";
+import type { RoleType } from "generated/prisma";
 
 export type UserRoles = RoleType;
 

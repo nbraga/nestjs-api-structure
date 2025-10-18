@@ -58,8 +58,8 @@ export class CreateUserService implements CreateUserUseCase {
 
         const confirmationEmailToken = await this.jwtService.signAsync(
             {
-                id: user.id,
-                email: user.email,
+                id: user!.id,
+                email: user!.email,
             },
             {
                 expiresIn: "1d",
@@ -67,8 +67,8 @@ export class CreateUserService implements CreateUserUseCase {
         );
 
         const accessToken = await this.jwtService.signAsync({
-            id: user.id,
-            email: user.email,
+            id: user!.id,
+            email: user!.email,
         });
 
         await this.invitationConfirmEmailUserService.send({

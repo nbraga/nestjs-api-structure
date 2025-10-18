@@ -1,5 +1,4 @@
 import { CryptographyModule } from "@/common/cryptography/cryptography.module";
-import { EnvService } from "@/infra/env/env.service";
 import { MailModule } from "@/infra/mail/mail.module";
 import { PrismaModule } from "@/infra/prisma/prisma.module";
 import { ChangePasswordController } from "@/modules/user/controllers/change-password.controller";
@@ -28,14 +27,11 @@ import { Module } from "@nestjs/common";
         RecoveryPasswordController,
         ResetPasswordController,
         ChangePasswordController,
-
         ResendConfirmEmailUserController,
         ConfirmEmailUserController,
         UpdateUserController,
     ],
     providers: [
-        EnvService,
-
         CreateUserService,
         FindMeService,
         RecoveryPasswordService,

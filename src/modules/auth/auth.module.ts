@@ -1,4 +1,3 @@
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
 import { Module } from "@nestjs/common";
 import { CryptographyModule } from "../../common/cryptography/cryptography.module";
 import { PrismaModule } from "../../infra/prisma/prisma.module";
@@ -8,7 +7,7 @@ import { LoginService } from "./services/login.service";
 @Module({
     imports: [PrismaModule, CryptographyModule],
     controllers: [LoginController],
-    providers: [LoginService, PrismaUserRepository],
+    providers: [LoginService],
     exports: [],
 })
 export class AuthModule {}

@@ -35,6 +35,7 @@ export default tseslint.config(
             "@typescript-eslint/no-unsafe-return": "off",
             "@typescript-eslint/no-unsafe-argument": "off",
             "@typescript-eslint/no-unused-vars": "off",
+            "@typescript-eslint/no-empty-object-type": "off",
             quotes: ["error", "double"],
             semi: ["error", "always"],
             "eol-last": ["error", "always"],

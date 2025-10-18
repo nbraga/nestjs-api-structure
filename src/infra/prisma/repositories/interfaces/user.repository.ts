@@ -1,16 +1,4 @@
-export type RoleType = "ADMIN" | "USER" | "PROVIDER" | "BUYER";
-
-export type UserStatus = "ACTIVE" | "INACTIVE" | "PENDING";
-
-export interface UserProps {
-    id: string;
-    email: string;
-    fullName: string;
-    password: string;
-    phone: string;
-    status: UserStatus;
-    createdAt: Date;
-}
+import type { UserProps } from "@/common/interfaces/user-props";
 
 export interface CreateUserParams {
     user: {
@@ -36,20 +24,7 @@ export interface UpdatePasswordParams {
 }
 
 export abstract class UserRepository {
-    abstract create(
-        params: CreateUserParams,
-    ): Promise<
-        Pick<
-            UserProps,
-            | "id"
-            | "email"
-            | "fullName"
-            | "phone"
-            | "createdAt"
-            | "password"
-            | "status"
-        >
-    >;
+    abstract create(params: CreateUserParams): Promise<UserProps | null>;
 
     abstract findByEmail(email: string): Promise<UserProps | null>;
 

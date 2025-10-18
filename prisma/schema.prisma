@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-    id        String   @id @default(cuid())
-    email     String   @unique
+    id        String         @id @default(cuid())
+    email     String         @unique
     password  String
     fullName  String
     phone     String
-    status    String   @default("PENDING")
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    status    UserStatusType @default(PENDING)
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    deletedAt DateTime?
 }
 
 enum RoleType {
@@ -30,4 +31,10 @@ enum RoleType {
     ADMIN
     BUYER
     SELLER
+}
+
+enum UserStatusType {
+    PENDING
+    DISABLED
+    ACTIVE
 }
