@@ -1,5 +1,5 @@
 import { BcryptServiceProps } from "@/common/interfaces/bcrypt-service-props";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
@@ -12,7 +12,7 @@ import {
 @Injectable()
 export class LoginService implements LoginUseCase {
     constructor(
-        private readonly userRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
         private readonly bcryptService: BcryptServiceProps,
     ) {}

@@ -1,6 +1,6 @@
 import { EnvService } from "@/infra/env/env.service";
 import { InvitationConfirmEmailUserService } from "@/infra/mail/services/invitation-confirm-email-user.service";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { BcryptServiceProps } from "../../../common/interfaces/bcrypt-service-props";
@@ -14,7 +14,7 @@ import {
 @Injectable()
 export class CreateUserService implements CreateUserUseCase {
     constructor(
-        private readonly prismaUserRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly bcryptService: BcryptServiceProps,
         private readonly jwtService: JwtService,
         private readonly invitationConfirmEmailUserService: InvitationConfirmEmailUserService,
@@ -27,8 +27,9 @@ export class CreateUserService implements CreateUserUseCase {
         | { status: "success"; data: CreateUserResponse }
         | { status: "error"; error: CreateUserErrors }
     > {
-        const isEmailAlreadyExists =
-            await this.prismaUserRepository.findByEmail(body.user.email);
+        const isEmailAlreadyExists = await this.userRepository.findByEmail(
+            body.user.email,
+        );
 
         if (isEmailAlreadyExists) {
             return {
@@ -52,7 +53,7 @@ export class CreateUserService implements CreateUserUseCase {
             body.roles = ["ADMIN"];
         }
 
-        const user = await this.prismaUserRepository.create({
+        const user = await this.userRepository.create({
             user: body.user,
         });
 

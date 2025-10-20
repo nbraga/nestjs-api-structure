@@ -1,4 +1,4 @@
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
 import {
     UpdateUserErrors,
@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class UpdateUserService implements UpdateUserUseCase {
-    constructor(private readonly prismaUserRepository: PrismaUserRepository) {}
+    constructor(private readonly userRepository: UserRepository) {}
 
     async execute({
         userId,
@@ -18,7 +18,7 @@ export class UpdateUserService implements UpdateUserUseCase {
         | { status: "success"; data: UpdateUserResponse }
         | { status: "error"; error: UpdateUserErrors }
     > {
-        const user = await this.prismaUserRepository.findById(userId);
+        const user = await this.userRepository.findById(userId);
 
         if (!user) {
             return {
@@ -34,7 +34,7 @@ export class UpdateUserService implements UpdateUserUseCase {
             };
         }
 
-        await this.prismaUserRepository.update({
+        await this.userRepository.update({
             userId,
             body,
         });

@@ -1,21 +1,21 @@
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { EnvService } from "@/infra/env/env.service";
+import { InvitationConfirmEmailUserService } from "@/infra/mail/services/invitation-confirm-email-user.service";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import {
     ResendConfirmEmailUserErrors,
     ResendConfirmEmailUserParams,
     ResendConfirmEmailUserResponse,
     ResendConfirmEmailUserUseCase,
 } from "../use-cases/resend-confirm-email-user.use-case";
-import { EnvService } from "@/infra/env/env.service";
-import { InvitationConfirmEmailUserService } from "@/infra/mail/services/invitation-confirm-email-user.service";
-import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class ResendConfirmEmailUserService
     implements ResendConfirmEmailUserUseCase
 {
     constructor(
-        private readonly prismaUserRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly invitationConfirmEmailUserService: InvitationConfirmEmailUserService,
         private readonly jwtService: JwtService,
         private readonly envService: EnvService,
@@ -27,7 +27,7 @@ export class ResendConfirmEmailUserService
         | { status: "success"; data: ResendConfirmEmailUserResponse }
         | { status: "error"; error: ResendConfirmEmailUserErrors }
     > {
-        const user = await this.prismaUserRepository.findById(userId);
+        const user = await this.userRepository.findById(userId);
 
         if (!user) {
             return {

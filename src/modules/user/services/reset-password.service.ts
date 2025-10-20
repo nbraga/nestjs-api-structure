@@ -1,6 +1,6 @@
 import { BcryptServiceProps } from "@/common/interfaces/bcrypt-service-props";
 import { EnvService } from "@/infra/env/env.service";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import {
     ResetPasswordErrors,
     ResetPasswordParams,
@@ -13,7 +13,7 @@ import { JwtService } from "@nestjs/jwt";
 @Injectable()
 export class ResetPasswordService implements ResetPasswordUseCase {
     constructor(
-        private readonly prismaUserRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
         private readonly envService: EnvService,
         private readonly bcryptService: BcryptServiceProps,
@@ -44,7 +44,7 @@ export class ResetPasswordService implements ResetPasswordUseCase {
 
         const email = payload.email;
 
-        const user = await this.prismaUserRepository.findByEmail(email);
+        const user = await this.userRepository.findByEmail(email);
 
         if (!user) {
             return {
@@ -55,7 +55,7 @@ export class ResetPasswordService implements ResetPasswordUseCase {
 
         const hashedPassword = await this.bcryptService.hash(password);
 
-        await this.prismaUserRepository.updatePassword({
+        await this.userRepository.updatePassword({
             userId: user.id,
             password: hashedPassword,
         });

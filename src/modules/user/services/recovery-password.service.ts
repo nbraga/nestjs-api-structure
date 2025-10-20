@@ -1,6 +1,6 @@
 import { EnvService } from "@/infra/env/env.service";
 import { RecoveryPasswordEmailService } from "@/infra/mail/services/recovery-password-email.service";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import {
     RecoveryPasswordErrors,
     RecoveryPasswordParams,
@@ -13,7 +13,7 @@ import { JwtService } from "@nestjs/jwt";
 @Injectable()
 export class RecoveryPasswordService implements RecoveryPasswordUseCase {
     constructor(
-        private readonly prismaUserRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly recoveryPasswordEmailService: RecoveryPasswordEmailService,
         private readonly jwtService: JwtService,
         private readonly envService: EnvService,
@@ -25,7 +25,7 @@ export class RecoveryPasswordService implements RecoveryPasswordUseCase {
         | { status: "success"; data: RecoveryPasswordResponse }
         | { status: "error"; error: RecoveryPasswordErrors }
     > {
-        const user = await this.prismaUserRepository.findByEmail(email);
+        const user = await this.userRepository.findByEmail(email);
 
         if (!user) {
             return {

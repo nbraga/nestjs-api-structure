@@ -1,4 +1,4 @@
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
 import {
     FindMeErrors,
@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class FindMeService implements FindMeUseCase {
-    constructor(private readonly userRepository: PrismaUserRepository) {}
+    constructor(private readonly userRepository: UserRepository) {}
 
     async execute({
         userId,

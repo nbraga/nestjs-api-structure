@@ -11,14 +11,14 @@ import { Request } from "express";
 import { NO_COMPANY_ID_REQUIRED_KEY } from "@/common/decorators/no-company-id-required.decorator";
 import { IS_PUBLIC_KEY } from "@/common/decorators/public.decorator";
 import { UserPayloadProps } from "@/common/interfaces/user-payload-props";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
         private jwtService: JwtService,
         private reflector: Reflector,
-        private userRepository: PrismaUserRepository,
+        private userRepository: UserRepository,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {

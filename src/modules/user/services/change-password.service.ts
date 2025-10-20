@@ -1,5 +1,5 @@
 import { BcryptServiceProps } from "@/common/interfaces/bcrypt-service-props";
-import { PrismaUserRepository } from "@/infra/prisma/repositories/prisma-user.repository";
+import { UserRepository } from "@/infra/prisma/repositories/interfaces/user.repository";
 import { Injectable } from "@nestjs/common";
 import {
     ChangePasswordErrors,
@@ -11,7 +11,7 @@ import {
 @Injectable()
 export class ChangePasswordService implements ChangePasswordUseCase {
     constructor(
-        private readonly prismaUserRepository: PrismaUserRepository,
+        private readonly userRepository: UserRepository,
         private readonly bcryptService: BcryptServiceProps,
     ) {}
 
@@ -22,7 +22,7 @@ export class ChangePasswordService implements ChangePasswordUseCase {
         | { status: "success"; data: ChangePasswordResponse }
         | { status: "error"; error: ChangePasswordErrors }
     > {
-        const user = await this.prismaUserRepository.findById(userId);
+        const user = await this.userRepository.findById(userId);
 
         if (!user) {
             return {
@@ -45,7 +45,7 @@ export class ChangePasswordService implements ChangePasswordUseCase {
 
         const hashedPassword = await this.bcryptService.hash(body.newPassword);
 
-        await this.prismaUserRepository.updatePassword({
+        await this.userRepository.updatePassword({
             userId,
             password: hashedPassword,
         });
